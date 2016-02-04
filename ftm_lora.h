@@ -1,0 +1,57 @@
+#ifndef	_FTM_LORA_H_
+#define	_FTM_LORA_H_
+
+#include <pthread.h>
+#include "ftm_types.h"
+#include "ftm_serial_io.h"
+#include "ftm_queue.h"
+
+typedef enum 
+{
+	FTM_LORA_SF6,
+	FTM_LORA_SF7,
+	FTM_LORA_SF8,
+	FTM_LORA_SF9,
+	FTM_LORA_SF10,
+	FTM_LORA_SF11,
+	FTM_LORA_SF12,
+} FTM_LORA_SPREADING_FACTOR, _PTR_ FTM_LORA_SPREADING_FACTOR_PTR;
+
+typedef	enum
+{
+	FTM_LORA_CR4_5,
+	FTM_LORA_CR4_6,
+	FTM_LORA_CR4_7,
+	FTM_LORA_CR4_8
+} FTM_LORA_CODING_RATE, _PTR_ FTM_LORA_CODING_RATE_PTR;
+
+typedef	enum
+{
+	FTM_LORA_BW125,
+	FTM_LORA_BW250,
+	FTM_LORA_BW500
+} FTM_LORA_BANDWIDTH, _PTR_ FTM_LORA_BANDWIDTH_PTR;
+
+typedef	struct
+{
+	FTM_UINT32					ulFrequency;
+	FTM_LORA_SPREADING_FACTOR	xSF;
+	FTM_LORA_CODING_RATE		xCR;
+	FTM_LORA_BANDWIDTH			xBW;
+
+	FTM_UINT8					pAppKey[16];
+	FTM_SERIAL_IO_CONFIG		xSerialIO;
+} FTM_LORA_SERVER_CONFIG, _PTR_ FTM_LORA_SERVER_CONFIG_PTR;
+
+
+typedef	struct
+{
+	FTM_LORA_SERVER_CONFIG		xConfig;
+	FTM_SERIAL_IO				xSerialIO;
+
+}	FTM_LORA_SERVER, _PTR_ FTM_LORA_SERVER_PTR;
+
+
+FTM_RET	FTM_LORA_SERVER_init(FTM_LORA_SERVER_PTR pServer, FTM_LORA_SERVER_CONFIG_PTR pConfig);
+
+#endif

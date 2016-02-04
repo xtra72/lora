@@ -1,0 +1,49 @@
+#ifndef	_SERIAL_H_
+#define	_SERIAL_H_
+
+#include <termios.h>
+#include <event2/event.h>
+#include "ftm_types.h"
+
+typedef	enum
+{
+	FTM_SERIAL_SPEED_0 		= 0,
+	FTM_SERIAL_SPEED_300 	= 1,
+	FTM_SERIAL_SPEED_600 	= 2,
+	FTM_SERIAL_SPEED_1200 	= 3,
+	FTM_SERIAL_SPEED_2400 	= 4,
+	FTM_SERIAL_SPEED_4800 	= 5,
+	FTM_SERIAL_SPEED_9600 	= 6,
+	FTM_SERIAL_SPEED_19200 	= 7,
+	FTM_SERIAL_SPEED_38400 	= 8,
+	FTM_SERIAL_SPEED_57600 	= 9,
+	FTM_SERIAL_SPEED_115200 = 10,
+	FTM_SERIAL_SPEED_230400 = 11,
+	FTM_SERIAL_SPEED_460800 = 12,
+	FTM_SERIAL_SPEED_MAX	= 12
+}	FTM_SERIAL_SPEED, _PTR_ FTM_SERIAL_SPEED_PTR;
+
+typedef	struct
+{
+	char				pDeviceName[255];
+	FTM_SERIAL_SPEED	xSpeed;
+}	FTM_SERIAL_CONFIG, _PTR_ FTM_SERIAL_CONFIG_PTR;
+
+typedef	struct
+{
+	int					nFD;		
+	FTM_SERIAL_CONFIG	xConfig;
+
+	struct termios		xOldState;
+}	FTM_SERIAL, _PTR_ FTM_SERIAL_PTR;
+
+FTM_RET	FTM_SERIAL_init(FTM_SERIAL_PTR pSerial, FTM_SERIAL_CONFIG_PTR pConfig);
+FTM_RET	FTM_SERIAL_open(FTM_SERIAL_PTR pSerial);
+FTM_RET	FTM_SERIAL_close(FTM_SERIAL_PTR pSerial);
+FTM_RET	FTM_SERIAL_final(FTM_SERIAL_PTR pSerial);
+
+FTM_RET	FTM_SERIAL_read(FTM_SERIAL_PTR pSerial, FTM_UINT8_PTR pBuffer, FTM_UINT32 ulBufferLen, FTM_UINT32_PTR pulReadLen);
+FTM_RET	FTM_SERIAL_readFrame(FTM_SERIAL_PTR pSerial, FTM_UINT8_PTR pBuffer, FTM_UINT32 ulBufferLen, FTM_UINT32 ulFrameGapTime, FTM_UINT32_PTR pulReadLen);
+FTM_RET	FTM_SERIAL_write(FTM_SERIAL_PTR pSerial, FTM_UINT8_PTR pBuffer, FTM_UINT32 ulBufferLen, FTM_UINT32_PTR pulWriteLen);
+
+#endif
